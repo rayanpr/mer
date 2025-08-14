@@ -6,11 +6,13 @@ import ProjectPage from './pages/ProjectPage'
 import DashboardPage from './pages/DashboardPage' 
 import SigInPage from './pages/SigInPage'
 import SignUpPage from './pages/SignUpPage'
+import Header from './components/Header'
 
 
 export default function App() {
   return (
     <div>
+      <Header/>
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/about' element={<AboutPage />} />
