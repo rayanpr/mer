@@ -7,6 +7,7 @@ import DashboardPage from './pages/DashboardPage'
 import SigInPage from './pages/SigInPage'
 import SignUpPage from './pages/SignUpPage'
 import Header from './components/Header'
+import Footers from './components/Footers'
 
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
         <Route path='/sign-in' element={<SigInPage />} />
         <Route path='/sign-up' element={<SignUpPage />} /> 
       </Routes>
+      <Footers/>
     </div>
   )
 }

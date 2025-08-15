@@ -2,6 +2,7 @@ import http from 'http';
 import mongoose from 'mongoose';
 import app from './app.js';
 import dotenv from 'dotenv';
+import errorMiddlware from './middlewares/errorMiddleware.js';
 
 dotenv.config();
 console.log("PORT",process.env.PORT)
@@ -20,3 +21,6 @@ const server = http.createServer(app)
 server.listen(Port, () => {
     console.log(`Server is running on port ${Port}`);
 })
+
+//middleware to handle errors
+app.use(errorMiddlware)
