@@ -4,6 +4,7 @@ import { Button,TextInput,Label, Alert, Spinner  } from "flowbite-react";
 import { FcGoogle } from "react-icons/fc";
 import { loginStart ,loginSuccess,loginFailure } from '../redux/slices.js/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import OAuth from '../components/OAuth';
 
 
 export default function SigInPage() {
@@ -71,10 +72,7 @@ export default function SigInPage() {
             <Button  disabled={isloading}  className='bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'  type="submit"> 
               {isloading ?(<><Spinner/> <span>Loading...</span></>) :( 'Sign In')}
             </Button>
-            <Button type='button' disabled={isloading} className='bg-gray-100 dark:bg-gray-800 dark:text-white'>
-              {isloading ?(<><Spinner/> <span>Loading...</span></>) :( 'Sign In with Google')}
-              <FcGoogle className='w-5 h-5 ml-2' />
-            </Button>
+            <OAuth/>
             <p className='text-sm text-gray-500 mt-3'>Dont have an account? <Link className='text-indigo-600' to={'/sign-up'}>Sign Up</Link></p>
            </form>
           {erroror   && <Alert color="failure">{JSON.stringify(erroror.payload)}</Alert>}
