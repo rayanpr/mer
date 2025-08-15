@@ -15,20 +15,26 @@ export const userSlice =  createSlice({
       state.isLoading = true;
       state.error = null;
       state.currentUser = null;
-      state.redirect = false
+      state.redirect = false;
     },
     loginSuccess: (state, action) => {
       state.isLoading = false;
       state.currentUser = action.payload;
       state.error = null;
-      state.redirect = true
+      state.redirect = true;
     },
     loginFailure: (state, action) => {
       state.isLoading = false;
       state.error = action;
       state.currentUser = null;
-      state.redirect = false
-    }
+      state.redirect = false;
+    },
+    logout: (state) => {
+      state.isLoading = false;
+      state.error = null;
+      state.currentUser = null;
+      state.redirect = true;
+    },
   },
     
 })

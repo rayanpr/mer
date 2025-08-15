@@ -40,30 +40,29 @@ export const logout = (req, res, next) => {
     res.clearCookie("accessToken", {
         secure: true,
         sameSite: "none"
-    }).status(200).json("User has been logged out");
+    }).status(200).json({message: "User has been logged out", success: true});
    }catch(error){
     next(errorHandler(400, error.message));
    }
 };
 
 export const loginWithGoogle = async(req, res, next) => {
+    const {username, email, imageUrl} = req.body;
     try{
-        const user = await User.findOne({email: req.body.email});
-        if(user){
-            const token = jwt.sign({id: user._id, isAdmin: user.isAdmin,username: user.username, email: user.email}, process.env.JWT);
-            const { isAdmin, ...otherDetails} = user._doc;
+        const userDoc =  await User.findOne({email});
+        if(userDoc){
+            const token = jwt.sign({id: userDoc._id, isAdmin: userDoc.isAdmin,username: userDoc.username, email: userDoc.email}, process.env.JWT);
+            const {password, isAdmin, ...otherDetails} = userDoc._doc;
             res.cookie("accessToken", token, {
                 httpOnly: true,
                 secure: true
             }).status(200).json({...otherDetails});
         }else{
-            const password = Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
-            const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(password, salt);
-            const hashPassword = bcrypt.hashSync(password, salt);
-            const newUser = await User.create({...req.body, hashPassword});
+            const generatedPassword = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            const hash = bcrypt.hashSync(generatedPassword, salt);
+            const newUser = await User.create({username, email,profilePic: imageUrl, password: hash});
             const token = jwt.sign({id: newUser._id, isAdmin: newUser.isAdmin,username: newUser.username, email: newUser.email}, process.env.JWT);
-            const {isAdmin, ...otherDetails} = newUser._doc;
+            const {password, isAdmin, ...otherDetails} = newUser._doc;
             res.cookie("accessToken", token, {
                 httpOnly: true,
                 secure: true

@@ -12,7 +12,7 @@ export default function SigInPage() {
   const[password, setPassword] = React.useState('');
   const[email, setEmail] = React.useState('');
   const [redirect, setRedirect] = React.useState(false);
-  const { isloading,error:erroror, currentUser} = useSelector(state => state.user);
+  const { isloading,error:erroror} = useSelector(state => state.user);
  async function handleSubmit(e) {
     dispatch(loginStart());
     e.preventDefault();
@@ -27,23 +27,24 @@ export default function SigInPage() {
           password,
         }),
       });
+     const data = await response.json();
      
       // setEmail("");
       // setPassword("");
-      console.log(response.ok);
+     
       if(response.ok){
-        dispatch(loginSuccess(await response.json()));
+        dispatch(loginSuccess(data));
         setRedirect(true);
       }else{
-        dispatch(loginFailure( await response.json()));
+        dispatch(loginFailure(data));
       }
     }catch(error){
       console.log(error);
     }
   }
-  console.log(currentUser);
- 
-  if(redirect) return <Navigate to={'/'} />
+  if(redirect){
+    return <Navigate to={'/'} />;
+  }
   return (
     <div className=' bg-white min-h-screen mt-20 dark:bg-gray-900 dark:text-white'>
       <div className='flex p-3 max-w-3xl mx-auto flex-col lg:flex-row md:items-center gap-5'>

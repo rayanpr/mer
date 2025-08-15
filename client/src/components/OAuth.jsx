@@ -8,41 +8,41 @@ import { loginStart ,loginSuccess,loginFailure } from '../redux/slices.js/userSl
 import { useDispatch, useSelector } from 'react-redux';
 export default function OAuth() {
     const dispatch = useDispatch();
-    const {isloading} = useSelector(state => state.user);
     const [redirect, setRedirect] = React.useState(false);  
+    const {isloading,currentUser} = useSelector(state => state.user);  
+    const auth = getAuth(app);
     async function handleOAuth() {
+        dispatch(loginStart());
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
         try{
-            dispatch(loginStart());
-            const auth = getAuth(app);
-            const provider = new GoogleAuthProvider();
-            provider.setCustomParameters({ prompt: "select_account" });
             const result = await signInWithPopup(auth, provider);
-            const username = result.user.displayName + Math.random().toString(36).slice(2);
-            const email = result.user.email;
-            const imageUrl = result.user.photoURL;
-            const response = await fetch('/api/auth/google', {
+             const response = await fetch('/api/auth/google', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  username,
-                  email,
-                  imageUrl
+                  username: result.user.displayName,
+                  email: result.user.email,
+                  imageUrl: result.user.photoURL
                 }),
             })
-            if(response.ok){
-                dispatch(loginSuccess(await response.json()));
-                setRedirect(true);
-            }else{
-                dispatch(loginFailure( await response.json()));
-            }
+          const data = await response.json();
+          console.log(response.ok);
+          if(response.ok){
+            dispatch(loginSuccess(data));
+            setRedirect(true);
+          }else{
+            dispatch(loginFailure(data));
+          }
         }catch(error){
             console.log(error);
         }
     }
+    console.log("currentUser",currentUser);
     if(redirect){
-       return <Navigate to={'/'} />
+        return <Navigate to={'/'} />
     }
   return (
     <Button  onClick={handleOAuth} type='button' disabled={isloading} className='bggradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white dark:bg-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' outline>
