@@ -9,6 +9,8 @@ import SignUpPage from './pages/SignUpPage'
 import Header from './components/Header'
 import Footers from './components/Footers'
 import PrivateRoute from './components/PrivateRoute'
+import PrivateRouteAdmin from './components/PrivateRouteAdmin'
+import CreatePost from './pages/CreatePost'
 
 export default function App() {
   return (
@@ -24,6 +26,9 @@ export default function App() {
         <Route path='*' element={<h1>404</h1>} />'
         <Route path='/sign-in' element={<SigInPage />} />
         <Route path='/sign-up' element={<SignUpPage />} /> 
+        <Route element={<PrivateRouteAdmin />}>
+          <Route path='/create-post' element={<CreatePost/>} />
+        </Route>
       </Routes>
       <Footers/>
     </div>

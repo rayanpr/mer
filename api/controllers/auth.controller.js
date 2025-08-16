@@ -52,7 +52,7 @@ export const loginWithGoogle = async(req, res, next) => {
         const userDoc =  await User.findOne({email});
         if(userDoc){
             const token = jwt.sign({id: userDoc._id, isAdmin: userDoc.isAdmin,username: userDoc.username, email: userDoc.email}, process.env.JWT);
-            const {password, isAdmin, ...otherDetails} = userDoc._doc;
+            const {password, ...otherDetails} = userDoc._doc;
             res.cookie("accessToken", token, {
                 httpOnly: true,
                 secure: true
@@ -62,7 +62,7 @@ export const loginWithGoogle = async(req, res, next) => {
             const hash = bcrypt.hashSync(generatedPassword, salt);
             const newUser = await User.create({username, email,profilePic: imageUrl, password: hash});
             const token = jwt.sign({id: newUser._id, isAdmin: newUser.isAdmin,username: newUser.username, email: newUser.email}, process.env.JWT);
-            const {password, isAdmin, ...otherDetails} = newUser._doc;
+            const {password,...otherDetails} = newUser._doc;
             res.cookie("accessToken", token, {
                 httpOnly: true,
                 secure: true

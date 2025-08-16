@@ -3,7 +3,7 @@ import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, Hi
 import { LuLogOut } from "react-icons/lu";
 import { Link, useLocation } from 'react-router-dom';
 import React, { useEffect }  from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices.js/userSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ export default function DashSideBar() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+    const { currentUser } = useSelector((state) => state.user);
     const [tab, setTab] = React.useState('');
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function DashSideBar() {
       <SidebarItems>
         <SidebarItemGroup>
             <Link to={'/dashboard?tab=profile'}>
-                <SidebarItem as={'div'}  active={tab==='profile'} icon={HiUser} label={'User'} labelColor='dark'>
+                <SidebarItem as={'div'}  active={tab==='profile'} icon={HiUser} label={currentUser.isAdmin ? 'Admin' : 'User'} labelColor='dark'>
                 Profile
                 </SidebarItem>
           </Link>

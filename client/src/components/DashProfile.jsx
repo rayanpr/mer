@@ -4,7 +4,7 @@ import { Alert, Button, Modal, TextInput,ModalBody, ModalHeader, ModalFooter } f
 import { useDispatch } from 'react-redux';
 import { updateUserStart, updateUserSuccess, updateUserFailure, logout, deleteUserStart, deleteUserSuccess, deleteUserFailure } from '../redux/slices.js/userSlice.js';
 import { MdOutlineDangerous } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TiUserDelete } from "react-icons/ti";
 
 
@@ -116,6 +116,13 @@ export default function DashProfile() {
        <TextInput onChange={(e) => setEmail(e.target.value)} label='Email' defaultValue={currentUser.email}  />
        <TextInput onChange={(e) => setPassword(e.target.value)} placeholder='Update Password' defaultValue={null} />
        <Button type='submit' className='bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 text-white text-lg'>Update Profile</Button>
+       {currentUser && currentUser.isAdmin && (
+        <Link to={'/create-post'} className='w-full'>
+          <Button type='button' className='bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 w-full text-white text-lg'>
+              Create Post
+          </Button>
+        </Link>
+       )}
       </form>
       <div className='flex j gap-2 mt-5 justify-between'>
         <div onClick={()=>setShowModal(true)} className='flex items-centertext-red-500 cursor-pointer'>
