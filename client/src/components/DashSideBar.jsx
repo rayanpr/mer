@@ -46,7 +46,7 @@ export default function DashSideBar() {
       <SidebarItems>
         <SidebarItemGroup>
             <Link to={'/dashboard?tab=profile'}>
-                <SidebarItem  active={tab==='profile'} icon={HiUser} label={'User'} labelColor='dark'>
+                <SidebarItem as={'div'}  active={tab==='profile'} icon={HiUser} label={'User'} labelColor='dark'>
                 Profile
                 </SidebarItem>
           </Link>

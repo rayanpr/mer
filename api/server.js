@@ -5,9 +5,7 @@ import dotenv from 'dotenv';
 import errorMiddlware from './middlewares/errorMiddleware.js';
 
 dotenv.config();
-console.log("PORT",process.env.PORT)
-console.log("MONGO_URL",process.env.MONGO_URL);
-
+// Set the environment variable for the MongoDB connection string
 const Port = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log('Database is connected');
