@@ -21,9 +21,11 @@ export default function CreatePost() {
                     type='text'
                     placeholder='Title'
                     className='border border-gray-300 rounded p-2 flex-1'
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                 />
                 <Select className='border border-gray-300 rounded p-2 w-1/3 '>
-                    <option className='text-gray-400' value="">Select Category</option>
+                    <option  className='text-gray-400' value="">Select Category</option>
                     <option className='text-gray-400' value="technology">Technology</option>
                     <option className='text-gray-400' value="health">JavaScipt</option>
                     <option className='text-gray-400' value="sports">ReactJs</option>
@@ -36,6 +38,7 @@ export default function CreatePost() {
                     name='image'
                     type='file'
                     className='border border-gray-300 rounded p-1 w-full'
+                    onChange={(e) => setImage(e.target.files[0])}
                 
                 />
                 <Button type='button' size='xl' className='text-sm bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500' >
