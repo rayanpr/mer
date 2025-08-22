@@ -113,5 +113,25 @@ export const updatePost = async (req, res) => {
         return next(errorHandler(500, 'Internal server error'));
     }
 };
-export const deletePost = async (req, res) => {};
+export const deletePost = async (req, res,next) => {
+    const {postId, userId} = req.params;
+    if(!req.user.isAdmin && req.user.id !== userId){
+        return next(errorHandler(403, 'You are not allowed to delete this post'));
+    }
+    try{
+        const deletedPost = await Post.findByIdAndDelete(postId);
+        if (!deletedPost) {
+            return next(errorHandler(404, 'Post not found'));
+        }else{
+            res.status(200).json({
+                success: true,
+                message: 'Post deleted successfully',
+                post: deletedPost
+            });
+        }
+    } catch (error) {
+        return next(errorHandler(500, 'Internal server error'));
+    }
+};
+
   
