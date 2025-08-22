@@ -1,5 +1,5 @@
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from "flowbite-react";
-import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from "react-icons/hi";
+import { HiArrowSmRight, HiChartPie, HiDocument, HiDocumentText, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from "react-icons/hi";
 import { LuLogOut } from "react-icons/lu";
 import { Link, useLocation } from 'react-router-dom';
 import React, { useEffect }  from 'react';
@@ -51,13 +51,18 @@ export default function DashSideBar() {
                 Profile
                 </SidebarItem>
           </Link>
+          { currentUser.isAdmin && (
+            <Link to={'/dashboard?tab=posts'}>
+            <SidebarItem as={'div'} active={tab==='posts'} icon={HiDocumentText} label='Posts' labelColor='dark'>
+              Posts
+            </SidebarItem>
+          </Link>
+          )}
           <SidebarItem onClick={logouts} icon={LuLogOut} >
             Logout
           </SidebarItem>
         </SidebarItemGroup>
-      </SidebarItems>
-
-      
+      </SidebarItems>      
     </Sidebar>
   )
 }

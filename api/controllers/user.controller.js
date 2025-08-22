@@ -105,4 +105,20 @@ export const deleteProfile = async (req, res, next) => {
         return next(errorHandler(500, 'Internal server error'));
     }
 }
+ export const getUsers = async (req, res, next) => {
+    const id = req.params.id;
+    try {
+        if(id){
+            const user = await User.findById(id).select('-password');
+            if(!user){
+                return next(errorHandler(404, 'User not found'));
+            }
+            return res.status(200).json({user});
+        }
+        const users = await User.find().select('-password');
+        res.status(200).json({users});
+    } catch (error) {
+        return next(errorHandler(500, 'Internal server error'));
+    }
+ }
 

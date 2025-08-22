@@ -1,23 +1,21 @@
 import { errorHandler } from "../utiles/error.js";
 import Post from "../models/posts.model.js";
+import fs from 'fs';
+import path from 'path';
 
 
 export const createPost = async (req, res, next) => {
-    if(!req.body.isAdmin){
+    const { title, value, category, image } = req.body;
+    const userId = req.user.id;
+    console.log("body", req.body);
+    if(!req.user.isAdmin){
         return next(errorHandler(403,'You are not allowed to create a post'));
     }
-    if(!req.body.title || !req.body.content || !req.body.category || !req.file){
+    if(!title || !value || !category){
         return next(errorHandler(400,'All fields are required'));
     }
     const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-z0-9-]/g, '-');
-    const post = {
-        title: req.body.title,
-        content: req.body.content,
-        category: req.body.category,
-        image: req.file.path,
-        userId: req.user.id,
-        slug: slug
-    };
+    const post = {title,value, category, image,userId, slug: slug};
     try {
         const newPost = await Post.create(post);
         res.status(201).json({
@@ -31,7 +29,54 @@ export const createPost = async (req, res, next) => {
 
 
 };
-export const getPosts = async (req, res) => {};
+export const uploadedFile = async (req, res, next) => {
+    if (req.file) {
+        const { path: tempPath, originalname } = req.file;
+        const ext = path.extname(originalname);
+        const newFilename = `${Date.now()}${ext}`;
+        const newPath = path.join(path.dirname(tempPath), newFilename);
+        fs.renameSync(tempPath, newPath);
+        const relativePath = `api/uploads/${newFilename}`.replace(/\\/g, '/');
+        res.status(200).json({ image: relativePath });
+    } else {
+        return next(errorHandler(400, 'No file uploaded')); 
+    }
+};
+export const getPosts = async (req, res, next) => {
+    try {
+        const startIndex = parseInt(req.query.startIndex) || 0;
+        const limit = parseInt(req.query.limit) || 9;
+        const sortDirection = req.query.sortDirection === 'asc' ? 1 : -1;
+        const postsDoc  = await Post.find({
+            ...(req.query.category && { category: req.query.category }),
+            ...(req.query.userId && { userId: req.query.userId }),
+            ...(req.query.slug && { slug: req.query.slug }),
+            ...(req.query.postId && { _id: req.query.postId }),
+            ...(req.query.search && {
+                $or: [
+                    { title: { $regex: req.query.search, $options: 'i' } },
+                    { value: { $regex: req.query.search, $options: 'i' } }
+                ]
+            }),
+        }).sort({ updatedAt: sortDirection })
+          .skip(startIndex)
+          .limit(limit);
+    const totalPosts = await Post.countDocuments();
+    const now = new Date();
+    const oneMonthAgo =  new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+    const lastMonthPosts = await Post.countDocuments({
+        createdAt: { $gte: oneMonthAgo }
+    });
+        res.status(200).json({
+            success: true,
+            posts: postsDoc,
+            totalPosts,
+            lastMonthPosts
+        });
+    } catch (error) {
+        return next(errorHandler(500, 'Internal server error'));
+    }        
+}
 export const getPost = async (req, res) => {};
 export const updatePost = async (req, res) => {};
 export const deletePost = async (req, res) => {};

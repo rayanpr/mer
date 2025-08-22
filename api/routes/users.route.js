@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.post('/upload-pic', AuthMiddleware,  upload.single('profilePic'), upploadPic);
 router.put('/update-profile/:id', AuthMiddleware, updateProfile);
-router.delete('/delete-profile/:id', AuthMiddleware, deleteProfile); // Assuming you have a deleteProfile function
+router.delete('/delete-profile/:id', AuthMiddleware, deleteProfile);
+router.get('/:id', deleteProfile) // Assuming you have a deleteProfile function
 
 export default router;
