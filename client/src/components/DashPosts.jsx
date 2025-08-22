@@ -2,11 +2,12 @@ import { Table } from 'flowbite-react';
 import React, { useEffect } from 'react'
 import {  useSelector } from 'react-redux';
 import { TableBody, TableCell, TableHead, TableHeadCell, TableRow } from 'flowbite-react';  
-import Post from '../../../api/models/posts.model';
+import { Link } from 'react-router-dom';
+import { LuDivide } from 'react-icons/lu';
+
 
 export default function DashPosts() {
     const [posts, setPosts] = React.useState([]);
-    const [users, setUsers] = React.useState([]);
     const { currentUser } = useSelector((state) => state.user);
     useEffect(() => {
         const fetchPosts = async () => {
@@ -24,45 +25,43 @@ export default function DashPosts() {
         if(currentUser.isAdmin) {
             fetchPosts();  
         }
-    }, [ currentUser._id, currentUser.isAdmin]);
-
-   
-console.log('users', users);
-console.log('posts', posts);
+    }, [ currentUser._id, currentUser.isAdmin, posts]);
   return (
-    <div className='p-4 min-h-screen max-w-3xl mx-auto'>
+    <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600'>
         {currentUser.isAdmin && posts.length > 0 ? (
-            <Table hoverable={true}>
-                <TableHead className="bg-gray-50 dark:bg-gray-700 border-b-2 border-gray-200 dark:border-gray-600 ">
-                   <TableRow className="bg-gray-100 dark:bg-gray-600">
-                        <TableHeadCell className='text-center'>Title</TableHeadCell>
-                        <TableHeadCell className='text-center'>Avatar</TableHeadCell>
-                        <TableHeadCell className='text-center'>Category</TableHeadCell>
-                        <TableHeadCell className='text-center'>User ID</TableHeadCell>
-                        <TableHeadCell className='text-center'>Upadated</TableHeadCell>
+            <Table className='w-full' hoverable={true}>
+                <TableHead className="bg-gray-400 dark:bg-gray-700">
+                   <TableRow className="text-gray-900 dark:text-white">
+                        <TableHeadCell className='text-center '>POST UPDATED</TableHeadCell>
+                        <TableHeadCell className='text-center'>Post Avatar</TableHeadCell>
+                        <TableHeadCell className='text-center'>Post Title</TableHeadCell>
+                        <TableHeadCell className='text-center'>Post Category</TableHeadCell>
+                        <TableHeadCell className='text-center'>Edit</TableHeadCell>
+                        <TableHeadCell className='text-center'>Delete</TableHeadCell>
                    </TableRow>
                 </TableHead>
-                <TableBody className="divide-y ">
+                <TableBody className='bg-white dark:bg-gray-800 divide-y'>
                     {posts.map((post) => (
-                        <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800" key={post._id}>
-                            <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                {post.title}
+                        <TableRow key={post._id} className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <TableCell className='text-center'>{new Date(post.updatedAt).toLocaleString()}</TableCell>
+
+                            <TableCell className='text-center'>
+                                <img src={post.image} alt={post.title} className='w-16 h-16 object-cover rounded-full' />
+                            </TableCell>
+                            <TableCell className='text-center'>{post.title}</TableCell>
+                            <TableCell className='text-center'>{post.category}</TableCell>
+                            <TableCell className='text-center'>
+                                <Link to={`/edit-post/${post._id}`}>
+                                    <button className='text-blue-500 hover:text-blue-600 hover:underline'>Edit</button>
+                                </Link>
                             </TableCell>
                             <TableCell className='text-center'>
-                                <img src={post.image} alt={post.title} className='w-12 h-12 rounded-full' />
-                            </TableCell>
-                            <TableCell className='text-center'>
-                                {post.category}
-                            </TableCell>
-                            <TableCell className='text-center'>
-                                {post.userId}
-                            </TableCell>
-                            <TableCell className='text-center'>
-                                {new Date(post.updatedAt).toLocaleDateString()}
+                                <button className='text-red-500 hover:text-red-600 hover:underline'>Delete</button>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
+                
             </Table>
         ):(
             <div className='text-center text-gray-500'>

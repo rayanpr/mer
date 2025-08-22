@@ -12,7 +12,7 @@ router.get('/', getPosts);
 // Route to get a specific post by ID
 router.get('/post/:id', getPost);
 // Route to update a post by ID
-router.put('/update-post/:id', AuthMiddleware,  updatePost);
+router.put('/update-post/:postId/:userId', AuthMiddleware,  updatePost);
 // Route to delete a post by ID
 router.delete('/delete-post/:id', AuthMiddleware, deletePost);
 // Route to upload an image for a post

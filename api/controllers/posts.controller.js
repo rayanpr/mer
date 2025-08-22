@@ -78,6 +78,40 @@ export const getPosts = async (req, res, next) => {
     }        
 }
 export const getPost = async (req, res) => {};
-export const updatePost = async (req, res) => {};
+export const updatePost = async (req, res) => {
+   const {postId, userId} = req.params;
+   const { title, value, category, image } = req.body;
+   if(!req.user.isAdmin && req.user.id !== userId){
+        return next(errorHandler(403, 'You are not allowed to update this post'));
+    }
+    if(!title || !value || !category){
+            return next(errorHandler(400, 'All fields are required'));
+        }
+    try{
+        const updatedPost = await Post.findByIdAndUpdate(
+            postId,
+           {
+            $set: {
+                title,
+                value,
+                category,
+                image
+            }
+           },
+            { new: true }
+        );
+        if (!updatedPost) {
+            return next(errorHandler(404, 'Post not found'));
+        }else{
+            res.status(200).json({
+                success: true,
+                message: 'Post updated successfully',
+                post: updatedPost
+            });
+        }
+        } catch (error) {
+        return next(errorHandler(500, 'Internal server error'));
+    }
+};
 export const deletePost = async (req, res) => {};
   

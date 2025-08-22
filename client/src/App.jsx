@@ -11,6 +11,7 @@ import Footers from './components/Footers'
 import PrivateRoute from './components/PrivateRoute'
 import PrivateRouteAdmin from './components/PrivateRouteAdmin'
 import CreatePost from './pages/CreatePost'
+import UpdatePost from './components/UpdatePost'
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <Route path='/sign-up' element={<SignUpPage />} /> 
         <Route element={<PrivateRouteAdmin />}>
           <Route path='/create-post' element={<CreatePost/>} />
+          <Route path='/edit-post/:postId' element={<UpdatePost/>} />
         </Route>
       </Routes>
       <Footers/>
