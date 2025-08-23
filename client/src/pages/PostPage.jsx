@@ -3,6 +3,7 @@ import { Button, Spinner } from 'flowbite-react';
 import { set } from 'mongoose';
 import React, { useEffect , useState} from 'react'
 import { Link, useParams } from 'react-router-dom'
+import CallToAction from '../components/CallToAction';
 
 export default function PostPage() {
     const {postSlug} = useParams();
@@ -48,6 +49,9 @@ export default function PostPage() {
             <span className='italic'>{posts && (posts.value.length /1000).toFixed(0)} min read</span>
         </div>
         <div className='mt-5 mx-auto w-full max-w-2xl p-3 post-Content' dangerouslySetInnerHTML={{__html: posts && posts.value}}></div>
+        <div className='mt-10 max-w-4xl mx-auto w-full'>
+            <CallToAction/>
+        </div>
     </main>
   )
 }
