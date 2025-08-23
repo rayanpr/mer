@@ -8,11 +8,13 @@ import { store ,persistor} from './redux/store.js'
 import { PersistGate } from 'redux-persist/integration/react'
 import ThemeProvider from './components/ThemeProvider.jsx'
 import { ThemeInit } from "../.flowbite-react/init";
+import ScrollToTop from './components/ScrollToTop.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <PersistGate  persistor={persistor}>
       <Provider store={store}>
         <BrowserRouter>
+        <ScrollToTop />
         <ThemeProvider>  
           <ThemeInit />
           <App />
