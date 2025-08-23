@@ -92,7 +92,7 @@ export const updateProfile = async(req, res, next) => {
 
 export const deleteProfile = async (req, res, next) => {
     const userId = req.params.id;
-    if (userId !== req.user.id) {
+    if (!req.user.isAdmin && userId !== req.user.id) {
         return next(errorHandler(403, 'You can only delete your own profile'));
     }
     try {
@@ -106,19 +106,26 @@ export const deleteProfile = async (req, res, next) => {
     }
 }
  export const getUsers = async (req, res, next) => {
-    const id = req.params.id;
-    try {
-        if(id){
-            const user = await User.findById(id).select('-password');
-            if(!user){
-                return next(errorHandler(404, 'User not found'));
-            }
-            return res.status(200).json({user});
-        }
-        const users = await User.find().select('-password');
-        res.status(200).json({users});
-    } catch (error) {
-        return next(errorHandler(500, 'Internal server error'));
-    }
+   if(!req.user.isAdmin) {
+    return next(errorHandler(403, 'You are not allowed to get users'));
+   }
+   try{
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sortDirection === 'asc' ? 1 : -1;
+    const users = await User.find().sort({ createdAt: sortDirection }).skip(startIndex).limit(limit).select('-password');
+    const totalUsers = await User.countDocuments();
+    const now = new Date();
+    const oneMonthAgo =  new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+    const lastMonthUsers = await User.countDocuments({ updatedAt: { $gte: oneMonthAgo } });
+    res.status(200).json({
+        success: true,
+        users,
+        totalUsers,
+        lastMonthUsers
+    })
+   }catch (error) {
+    return next(errorHandler(500, 'Internal server error'));    
+   }
  }
 

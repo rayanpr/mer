@@ -16,12 +16,16 @@ export const createPost = async (req, res, next) => {
     }
     const slug = req.body.title.split(' ').join('-').toLowerCase().replace(/[^a-z0-9-]/g, '-');
     const post = {title,value, category, image,userId, slug: slug};
+    
     try {
         const newPost = await Post.create(post);
         res.status(201).json({
             success: true,
             message: 'Post created successfully',
-            post: newPost
+            post: newPost,
+           
+
+
         });
     } catch (error) {
         next(errorHandler(500, 'Internal Server Error'));

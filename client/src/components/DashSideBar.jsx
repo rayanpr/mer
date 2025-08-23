@@ -6,6 +6,7 @@ import React, { useEffect }  from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices.js/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { FaUsers } from "react-icons/fa";
 
 
 export default function DashSideBar() {
@@ -50,7 +51,7 @@ export default function DashSideBar() {
                 <SidebarItem as={'div'}  active={tab==='profile'} icon={HiUser} label={currentUser.isAdmin ? 'Admin' : 'User'} labelColor='dark'>
                 Profile
                 </SidebarItem>
-          </Link>
+            </Link>
           { currentUser.isAdmin && (
             <Link to={'/dashboard?tab=posts'}>
             <SidebarItem as={'div'} active={tab==='posts'} icon={HiDocumentText} label='Posts' labelColor='dark'>
@@ -58,6 +59,15 @@ export default function DashSideBar() {
             </SidebarItem>
           </Link>
           )}
+          {
+            currentUser.isAdmin && (
+              <Link to={'/dashboard?tab=users'}>
+              <SidebarItem as={'div'} active={tab==='users'} icon={FaUsers} label='Users' labelColor='dark'>
+                Users
+              </SidebarItem>
+            </Link>
+            )
+          }
           <SidebarItem onClick={logouts} icon={LuLogOut} >
             Logout
           </SidebarItem>

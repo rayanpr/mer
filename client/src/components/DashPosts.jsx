@@ -40,8 +40,6 @@ const handleDelete = async (postId) => {
         console.error('Error deleting post:', error);
     }
 };
-console.log(showModal);
-
   
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600'>
@@ -61,9 +59,13 @@ console.log(showModal);
                     {posts.map((post) => (
                         <TableRow key={post._id} className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <TableCell className='text-center'>{new Date(post.updatedAt).toLocaleString()}</TableCell>
-                            <TableCell className='text-center'>
+                            
+                            <TableCell as={'div'}  className='text-center'>
+                            <Link to={`/post/${post.slug}`}>
                                 <img src={post.image} alt={post.title} className='w-16 h-16 object-cover rounded-full' />
+                            </Link>
                             </TableCell>
+                            
                             <TableCell className='text-center'>{post.title}</TableCell>
                             <TableCell className='text-center'>{post.category}</TableCell>
                             <TableCell className='text-center'>

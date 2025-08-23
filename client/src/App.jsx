@@ -12,6 +12,7 @@ import PrivateRoute from './components/PrivateRoute'
 import PrivateRouteAdmin from './components/PrivateRouteAdmin'
 import CreatePost from './pages/CreatePost'
 import UpdatePost from './components/UpdatePost'
+import PostPage from './pages/PostPage'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/about' element={<AboutPage />} />
         <Route path='/project' element={<ProjectPage />} />
+        <Route path='/post/:postSlug' element={<PostPage />} />
         <Route  element={<PrivateRoute />}>
           <Route path='dashboard' element={<DashboardPage />} />
         </Route>
