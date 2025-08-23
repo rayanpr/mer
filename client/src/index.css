@@ -25,4 +25,37 @@ body {
   font-size: 1.05rem;
   line-height: 1.6;
 }
+.post-Content {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.post-Content p {
+  margin-bottom: 1rem;
+}
+.post-Content h1 {
+  font-size: 2rem;
+}
+.post-Content h2 {
+  font-size: 1.8rem;
+}
+.post-Content h3 {
+  font-size: 1.6rem;
+}
+.post-Content h4 {
+  font-size: 1.4rem;
+}
+.post-Content h5 {
+  font-size: 1.2rem;
+}
+.post-Content h6 {
+  font-size: 1rem;
+}
+.post-Content a{
+  color: #0ea5e9;
+}
+.post-Content a:hover{
+  color: #0284c7;
+  text-decoration: underline;
+}
 

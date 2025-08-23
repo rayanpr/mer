@@ -31,9 +31,7 @@ export default function Header() {
     }catch(error){
       console.log(error);
     }
-  }
-  console.log('currentUser',currentUser);
- 
+  } 
   return (
     <Navbar fluid className="border-b-2 bg-white dark:bg-gray-900">
       <Link to={'/'} className="self-center whitespace-nowrap text-sm lg:text-xl font-semibold dark:text-white">
