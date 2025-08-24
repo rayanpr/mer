@@ -9,6 +9,6 @@ router.get('/get-comment/:postId', getComment);
 router.post('/create-comment', AuthMiddleware, createComment);
 router.put('/likes/:commentId', AuthMiddleware, updateCommentAndLikes);
 router.put('/update-comment/:commentId', AuthMiddleware, updateComment);
-router.delete('/:id', AuthMiddleware, deleteComment);
+router.delete('/:commentId', AuthMiddleware, deleteComment);
 
 export default router

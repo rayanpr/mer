@@ -1,4 +1,4 @@
-import { Alert, Button, Textarea, Spinner } from 'flowbite-react';
+import { Alert, Button, Textarea, Spinner, Modal } from 'flowbite-react';
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { Link, Navigate , useNavigate} from 'react-router-dom';
@@ -55,6 +55,27 @@ export default function CommentSection({postsId}) {
         
     }
 
+    const deleteComment = async(commentId) => {
+        try{
+            const response = await fetch(`/api/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                credentials: 'include', // Include credentials for authentication
+              });
+              const data = await response.json();
+              if (response.ok) {
+                setComments(comments.filter(comment => comment._id !== commentId));
+              }else {
+                console.log(data.message);
+              } 
+        }catch(error){
+            console.log(error);
+        
+        } 
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true); setErrorComment('');
@@ -97,6 +118,7 @@ export default function CommentSection({postsId}) {
             </div>
         )
     }
+   
   return (
     <div className='mt-5 max-w-2xl mx-auto w-full p-3'>
         {currentUser ? (
@@ -142,7 +164,7 @@ export default function CommentSection({postsId}) {
                 </div>
             </div>
             {comments.map((comment) => (
-                <Comments key={comment._id} onLikes={handleLikes} currentUser={currentUser}  onEdit={EditComments} comment={comment}/>
+                <Comments key={comment._id} onLikes={handleLikes} currentUser={currentUser}  onEdit={EditComments} deleteComment={deleteComment} comment={comment}/>
             ))}
             </>
 

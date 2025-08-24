@@ -31,7 +31,20 @@ export const createComment = async (req, res, next) => {
        next(errorHandler(500, 'Internal Server Error'));
     }
    }
-export const deleteComment = async (req, res, next) => {};
+export const deleteComment = async (req, res, next) => {
+    try{
+        const commentDoc = await Comment.findById(req.params.commentId);
+        if(!commentDoc) return next(errorHandler(404, 'Comment not found'));
+
+        if(commentDoc.userId !== req.user.id && !req.user.isAdmin){
+            return next(errorHandler(403, 'You are not allowed to delete this comment'));
+        }
+        await Comment.findByIdAndDelete(req.params.commentId);
+        res.status(200).json({message: 'Comment deleted successfully'});
+    }catch(error){
+        next(errorHandler(500, 'Internal Server Error'));
+    }
+};
 export const updateCommentAndLikes = async (req, res, next) => {
     try{
         const commentDoc = await Comment.findById(req.params.commentId);

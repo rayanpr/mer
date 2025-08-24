@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import moment from 'moment';
-import { Button, Textarea } from 'flowbite-react';
+import { Button, Textarea, Modal, ModalBody, ModalHeader, ModalFooter } from 'flowbite-react';
 import { FaThumbsUp } from 'react-icons/fa';
 
-export default function Comments({comment,onLikes,currentUser,onEdit}) {
+export default function Comments({comment,onLikes,currentUser,onEdit,deleteComment}) {
     // console.log('comment',comment);
     const [users, setUsers] = React.useState([]);
     const [showModal, setShowModal] = React.useState(false);
@@ -55,6 +55,7 @@ export default function Comments({comment,onLikes,currentUser,onEdit}) {
 
     }
 
+
   return (
     <div className='flex p-4 border-b dark:border-gray-600 text-sm'>
        <div className='flex-shrink-0 mr-3 items-center mb-1'>
@@ -97,6 +98,18 @@ export default function Comments({comment,onLikes,currentUser,onEdit}) {
             )}
        </div>
        </>
+        )}
+        {showModal && (
+            <Modal className='z-50' show={showModal} onClose={() => setShowModal(false)}>
+                <ModalHeader>Confirm Delete</ModalHeader>
+                <ModalBody>
+                    Are you sure you want to delete this comment?
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="failure" onClick={() => setShowModal(false)}>Cancel</Button>
+                    <Button color="failure" onClick={() => deleteComment(comment._id)}>Delete</Button>
+                </ModalFooter>
+            </Modal>
         )}
        </div>
     </div>
