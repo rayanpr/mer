@@ -3,12 +3,14 @@ import React, { useEffect , useState} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import CallToAction from '../components/CallToAction';
 import CommentSection from '../components/CommentSection';
+import Card from '../components/Card';
 
 export default function PostPage() {
     const {postSlug} = useParams();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [recentPosts, setRecentPosts] = useState(null);
    
     useEffect(() => {
         const fetchPosts = async () => {
@@ -29,6 +31,23 @@ export default function PostPage() {
         }
        fetchPosts();
     }, [postSlug]);
+
+   useEffect(()=>{
+    const fetchRecentPosts = async () => {
+        try {
+            const response = await fetch(`/api/posts?limit=3`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setRecentPosts(data.posts);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+        }
+    };
+    fetchRecentPosts();
+   },[posts]);
+
     if(loading){
         return(
             <div className='flex justify-center items-center min-h-screen'>
@@ -53,6 +72,13 @@ export default function PostPage() {
             <CallToAction/>
         </div>
         <CommentSection postsId={posts._id}/>
+        <div className='flex flex-col items-center mt-10 justify-center mb-5'>
+            <h1 className='text-xl mt-5'>Recent articles</h1>
+            <div className='flex flex-wrap gap-5 mt-10'>
+                {recentPosts && recentPosts.map((post) => (<Card key={post._id} post={post}/>))}
+                    
+            </div>
+        </div>
     </main>
   )
 }
