@@ -1,7 +1,7 @@
 import { Alert, Button, Textarea, Spinner } from 'flowbite-react';
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate , useNavigate} from 'react-router-dom';
 import Comments from './Comments';
 
 export default function CommentSection({postsId}) {
@@ -10,6 +10,7 @@ export default function CommentSection({postsId}) {
     const [loading, setLoading] = React.useState(false);
     const [errorComment, setErrorComment] = React.useState('');
     const [comments, setComments] = React.useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getComments = async () => {
@@ -27,6 +28,32 @@ export default function CommentSection({postsId}) {
         }
         getComments();
     }, [postsId]);
+
+    const handleLikes = async (commentId) => {
+        try{
+            if(!currentUser){
+                navigate('/sign-in');
+                return ;
+            }
+            const response = await fetch(`/api/comments/likes/${commentId}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                credentials: 'include', // Include credentials for authentication
+              });
+              const data = await response.json();
+              if (response.ok) {
+                setComments(comments.map(comment => comment._id === commentId ?{...comment,likes: data.likes,numberOfLikes: data.likes.length }: comment));
+              }else {
+                console.log(data.message);
+              } 
+        }catch(error){
+            console.log(error);
+        
+        }
+        
+    }
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true); setErrorComment('');
@@ -110,7 +137,7 @@ export default function CommentSection({postsId}) {
                 </div>
             </div>
             {comments.map((comment) => (
-                <Comments key={comment._id} comment={comment}/>
+                <Comments key={comment._id} onLikes={handleLikes} currentUser={currentUser} comment={comment}/>
             ))}
             </>
 
