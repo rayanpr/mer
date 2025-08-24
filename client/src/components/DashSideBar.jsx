@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices.js/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { FaUsers } from "react-icons/fa";
+import { MdComment } from "react-icons/md";
+import { HiAnnotation } from "react-icons/hi";
 
 
 export default function DashSideBar() {
@@ -46,7 +48,7 @@ export default function DashSideBar() {
   return (
     <Sidebar className="w-full md:w-54 border-b-4 border-gray-200">
       <SidebarItems>
-        <SidebarItemGroup>
+        <SidebarItemGroup className="w-full mb-5 flex flex-col gap-4">
             <Link to={'/dashboard?tab=profile'}>
                 <SidebarItem as={'div'}  active={tab==='profile'} icon={HiUser} label={currentUser.isAdmin ? 'Admin' : 'User'} labelColor='dark'>
                 Profile
@@ -54,7 +56,7 @@ export default function DashSideBar() {
             </Link>
           { currentUser.isAdmin && (
             <Link to={'/dashboard?tab=posts'}>
-            <SidebarItem as={'div'} active={tab==='posts'} icon={HiDocumentText} label='Posts' labelColor='dark'>
+            <SidebarItem as={'div'} active={tab==='posts'} icon={HiDocumentText} >
               Posts
             </SidebarItem>
           </Link>
@@ -62,20 +64,22 @@ export default function DashSideBar() {
           {
             currentUser.isAdmin && (
               <Link to={'/dashboard?tab=users'}>
-              <SidebarItem as={'div'} active={tab==='users'} icon={FaUsers} label='Users' labelColor='dark'>
+              <SidebarItem as={'div'} active={tab==='users'} icon={FaUsers} >
               Users
               </SidebarItem>
             </Link>
             )
           }
           {currentUser.isAdmin && (
-            <Link to={'/dashboard?tab=comments'}>
-            <SidebarItem as={'div'} active={tab==='comments'} icon={HiDocument} label='Comments' labelColor='dark'  >
+            <Link className=" mb-3" to={'/dashboard?tab=comments'}>
+            <SidebarItem as={'div'} active={tab==='comments'} icon={HiAnnotation}   >
             Comments
             </SidebarItem>
           </Link>
           )}
-            <SidebarItem onClick={logouts} icon={LuLogOut} >
+        </SidebarItemGroup>
+        <SidebarItemGroup>
+          <SidebarItem className=" mb-3" onClick={logouts} icon={LuLogOut} >
             Logout
             </SidebarItem>
         </SidebarItemGroup>

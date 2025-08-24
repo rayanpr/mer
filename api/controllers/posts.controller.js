@@ -85,7 +85,7 @@ export const getPosts = async (req, res, next) => {
     }        
 }
 export const getPost = async (req, res) => {};
-export const updatePost = async (req, res) => {
+export const updatePost = async (req, res, next) => {
    const {postId, userId} = req.params;
    const { title, value, category, image } = req.body;
    if(!req.user.isAdmin && req.user.id !== userId){
