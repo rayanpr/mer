@@ -63,14 +63,21 @@ export default function DashSideBar() {
             currentUser.isAdmin && (
               <Link to={'/dashboard?tab=users'}>
               <SidebarItem as={'div'} active={tab==='users'} icon={FaUsers} label='Users' labelColor='dark'>
-                Users
+              Users
               </SidebarItem>
             </Link>
             )
           }
-          <SidebarItem onClick={logouts} icon={LuLogOut} >
+          {currentUser.isAdmin && (
+            <Link to={'/dashboard?tab=comments'}>
+            <SidebarItem as={'div'} active={tab==='comments'} icon={HiDocument} label='Comments' labelColor='dark'  >
+            Comments
+            </SidebarItem>
+          </Link>
+          )}
+            <SidebarItem onClick={logouts} icon={LuLogOut} >
             Logout
-          </SidebarItem>
+            </SidebarItem>
         </SidebarItemGroup>
       </SidebarItems>      
     </Sidebar>

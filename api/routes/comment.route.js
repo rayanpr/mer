@@ -4,7 +4,7 @@ import { getComments, getComment, createComment, updateCommentAndLikes, deleteCo
 
 const router = express.Router();
 
-router.get('/', getComments);
+router.get('/', AuthMiddleware, getComments);
 router.get('/get-comment/:postId', getComment);
 router.post('/create-comment', AuthMiddleware, createComment);
 router.put('/likes/:commentId', AuthMiddleware, updateCommentAndLikes);
