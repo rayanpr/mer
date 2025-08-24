@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import { upploadPic , updateProfile, deleteProfile,getUsers} from '../controllers/user.controller.js';
+import { upploadPic , updateProfile, deleteProfile,getUsers,getUsersComments} from '../controllers/user.controller.js';
 import AuthMiddleware from '../middlewares/AuthMiddleware.js';
 import multer from 'multer';
 
@@ -12,6 +12,7 @@ router.post('/upload-pic', AuthMiddleware,  upload.single('profilePic'), uppload
 router.put('/update-profile/:id', AuthMiddleware, updateProfile);
 router.delete('/delete-profile/:id', AuthMiddleware, deleteProfile);
 router.get('/', AuthMiddleware, getUsers);
+router.get('/:userId', getUsersComments);
  // Assuming you have a deleteProfile function
 
 export default router;

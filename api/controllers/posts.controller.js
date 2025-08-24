@@ -47,6 +47,7 @@ export const uploadedFile = async (req, res, next) => {
     }
 };
 export const getPosts = async (req, res, next) => {
+    const slug = req.query.postSlug;
     try {
         const startIndex = parseInt(req.query.startIndex) || 0;
         const limit = parseInt(req.query.limit) || 9;
@@ -54,6 +55,7 @@ export const getPosts = async (req, res, next) => {
         const postsDoc  = await Post.find({
             ...(req.query.category && { category: req.query.category }),
             ...(req.query.userId && { userId: req.query.userId }),
+            ...(slug && { slug }),
             ...(req.query.slug && { slug: req.query.slug }),
             ...(req.query.postId && { _id: req.query.postId }),
             ...(req.query.search && {
@@ -65,6 +67,7 @@ export const getPosts = async (req, res, next) => {
         }).sort({ updatedAt: sortDirection })
           .skip(startIndex)
           .limit(limit);
+
     const totalPosts = await Post.countDocuments();
     const now = new Date();
     const oneMonthAgo =  new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());

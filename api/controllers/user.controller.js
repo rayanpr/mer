@@ -88,7 +88,7 @@ export const updateProfile = async(req, res, next) => {
     }
 
 
-}
+};
 
 export const deleteProfile = async (req, res, next) => {
     const userId = req.params.id;
@@ -104,7 +104,7 @@ export const deleteProfile = async (req, res, next) => {
     } catch (error) {
         return next(errorHandler(500, 'Internal server error'));
     }
-}
+};
  export const getUsers = async (req, res, next) => {
    if(!req.user.isAdmin) {
     return next(errorHandler(403, 'You are not allowed to get users'));
@@ -127,5 +127,15 @@ export const deleteProfile = async (req, res, next) => {
    }catch (error) {
     return next(errorHandler(500, 'Internal server error'));    
    }
- }
+ };
 
+export const getUsersComments = async(req,res,next)=>{
+   const { userId } = req.params;
+   try{
+    const userDoc = await User.findById(userId).select('-password');
+    res.status(200).json(userDoc);
+   }catch (error) {
+    return next(errorHandler(500, 'Internal server error'));    
+   
+};
+}

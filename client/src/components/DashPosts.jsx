@@ -60,7 +60,7 @@ const handleDelete = async (postId) => {
                         <TableRow key={post._id} className="bg-white dark:border-gray-700 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <TableCell className='text-center'>{new Date(post.updatedAt).toLocaleString()}</TableCell>
                             
-                            <TableCell as={'div'}  className='text-center'>
+                            <TableCell className='text-center'>
                             <Link to={`/post/${post.slug}`}>
                                 <img src={post.image} alt={post.title} className='w-16 h-16 object-cover rounded-full' />
                             </Link>

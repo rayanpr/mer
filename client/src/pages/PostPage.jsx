@@ -1,15 +1,15 @@
-
 import { Button, Spinner } from 'flowbite-react';
-import { set } from 'mongoose';
 import React, { useEffect , useState} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import CallToAction from '../components/CallToAction';
+import CommentSection from '../components/CommentSection';
 
 export default function PostPage() {
     const {postSlug} = useParams();
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+   
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
@@ -36,7 +36,6 @@ export default function PostPage() {
             </div>
         )
     }
-    console.log('posts',posts.value.length);
   return (
     <main className='p-3 flex flex-col max-w-6xl mx-auto min-h-screen'>
         <h1 className='text-3xl mt-10 text-center font-serif max-w-2xl mx-auto lg:text-4xl'>{posts && posts.title}</h1>
@@ -48,10 +47,12 @@ export default function PostPage() {
             <span>{posts && new Date(posts.createdAt).toDateString()}</span>
             <span className='italic'>{posts && (posts.value.length /1000).toFixed(0)} min read</span>
         </div>
+        {error && <div>{error}</div>}
         <div className='mt-5 mx-auto w-full max-w-2xl p-3 post-Content' dangerouslySetInnerHTML={{__html: posts && posts.value}}></div>
         <div className='mt-10 max-w-4xl mx-auto w-full'>
             <CallToAction/>
         </div>
+        <CommentSection postsId={posts._id}/>
     </main>
   )
 }
