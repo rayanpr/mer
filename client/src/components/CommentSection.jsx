@@ -54,6 +54,7 @@ export default function CommentSection({postsId}) {
         }
         
     }
+
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true); setErrorComment('');
@@ -83,6 +84,10 @@ export default function CommentSection({postsId}) {
             console.log(error);
         
         }
+    }
+
+     const EditComments =(comment, editedC) => {
+    setComments(comments.map(c=> c._id === comment._id ? {...c,value: editedC} : c));
     }
             
     if(loading){
@@ -137,7 +142,7 @@ export default function CommentSection({postsId}) {
                 </div>
             </div>
             {comments.map((comment) => (
-                <Comments key={comment._id} onLikes={handleLikes} currentUser={currentUser} comment={comment}/>
+                <Comments key={comment._id} onLikes={handleLikes} currentUser={currentUser}  onEdit={EditComments} comment={comment}/>
             ))}
             </>
 

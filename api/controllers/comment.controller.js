@@ -60,4 +60,31 @@ export const getComment = async (req, res, next) => {
         next(errorHandler(500, 'Internal Server Error'));
     }
 };
+
+export const updateComment = async (req, res, next) => {
+    try{
+        const commentDoc = await Comment.findById(req.params.commentId);
+    if(!commentDoc){
+        return next(errorHandler(404, 'Comment not found'));
+    }
+    if(commentDoc.userId !== req.user.id && !req.user.isAdmin){
+        return next(errorHandler(403, 'You are not allowed to update this comment'));
+    }
+    const updatedComment = await Comment.findByIdAndUpdate(req.params.commentId, {
+        $set: {
+            value: req.body.value,
+        }
+    }, {
+        new: true,
+        runValidators: true,
+    });
+
+    commentDoc.value = req.body.value;
+    await commentDoc.save();
+    res.status(200).json(commentDoc);
+    }catch(error){
+        next(errorHandler(500, 'Internal Server Error'));   
+    }
+};
+
 export const getComments = async (req, res, next) => {}; 
