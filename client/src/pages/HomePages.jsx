@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import CallToAction from '../components/CallToAction'
 import { Link } from 'react-router-dom'
 import Card from '../components/Card'
+import {motion} from 'framer-motion'
 
 export default function HomePages() {
   const [posts, setPosts] = useState([]);
@@ -22,20 +23,25 @@ export default function HomePages() {
   }, [])
   console.log('posts', posts);
   return (
-    <div className='flex flex-col gap-6 mx-5'>
-      <div className='flex flex-col gap-6 lg:p-28 px-3 max-w-6xl mx-auto'>
-        <h1 className='text-4xl font-bold'>Welcome to Rayan's Blog</h1>
-        <p className='mt-4 text-gray-500 text-xs sm:text-sm'>
+    <div className='flex flex-col gap-6 mt-20 mx-5'>
+      <motion.div 
+      className='flex flex-col gap-6 lg:p-28 px-3 max-w-6xl mx-auto'
+      initial={{ opacity: 0, x: -40 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 1, delay: 0.5 }}
+      >
+        <motion.h1 initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.5 }} className='text-4xl font-bold'>Welcome to Rayan's Blog</motion.h1>
+        <motion.p initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1.2, delay: 0.7 }} className='mt-4 text-gray-500 text-xs sm:text-sm'>
           Share your thoughts and ideas about programming, web development, and more. 
           Whether you're a beginner or an experienced developer, our blog is the perfect place to find inspiration and knowledge.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
       <Link to={'/search'} className='text-xs sm:text-sm font-bold text-teal-500 hover:underline mt-5'>
          View All Posts
       </Link>
-      <div className='p-3 mx-3 bg-amber-100 dark:bg-slate-700'>
+      <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.5 }} className='p-3 mx-3 bg-amber-100 dark:bg-slate-700'>
         <CallToAction  />
-      </div>
+      </motion.div>
       <div className='flex flex-col py-7 p-3 gap-6 lg:p-28 px-3 max-w-8xl  mx-auto'>
       {posts && posts.length > 0 && (
         <div className='flex flex-col gap-6 '>
